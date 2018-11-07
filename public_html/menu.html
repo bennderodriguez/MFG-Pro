@@ -61,6 +61,7 @@
                 xmlhttp.onreadystatechange = function () {
                     if (this.readyState == 4 && this.status == 200) {
                         myObj = JSON.parse(this.responseText);
+                        console.log(myObj);
                         var date = myObj.message;
                         console.log(date);
                         if (myObj.status.toString() == "Error") {
