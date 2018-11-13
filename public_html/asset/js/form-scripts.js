@@ -19,7 +19,7 @@ function submitForm() {
     console.log('Password: ' + Password);
     $.ajax({
         type: "POST",
-        url: "http://127.0.0.1/MFG-RockJS/",
+        url: "http://172.16.2.50:8081/MFG-RockJS/",
         data: "action=auth&usuario=" + usuario + "&Password=" + Password,
         success: function (text) {
             console.log(text);

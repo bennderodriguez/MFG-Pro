@@ -8,6 +8,8 @@ $("#ccxc").validator().on("submit", function (event) {
         // everything looks good!
         event.preventDefault();
         submitForm();
+
+        document.getElementById("bodyReport").innerHTML = "";
     }
 });
 
@@ -43,32 +45,42 @@ function submitForm() {
 
     $.ajax({
         type: "POST",
-        url: "http://localhost/MFG-RockJS/",
-        data: "action=ccxc&jwt=" + jwt + "&Cobra=" + Cobra + "&Solo_Abiert=" + Solo_Abiert
-                + "&Moneda=" + Moneda + "&MonedaRep=" + MonedaRep + "&Salida=" + Salida,
+        url: "http://172.16.2.50:8081/MFG-RockJS/",
+        data: "action=ccxc&jwt=" + jwt + "&vipcte=" + Cobra + "&vipabierto=" + "no"
+                + "&vipmoneda=" + Moneda + "&vipmodeda2=" + MonedaRep + "&Salida=" + Salida
+                + "&Cobra=1&Solo_Abiert=1&Moneda=1&MonedaRep=1",
         success: function (text) {
-            console.log(text.message[0].Salida);
+            document.getElementById("bodyReport").innerHTML = '<div class="alert alert-info"><strong>Espere</strong> Cargando Contenido ... espere <i class="pe-7s-config pe-spin pe-2x pe-va"></i></div>';
 
+            console.log(text);
+            var folio = text.message[0].Consulta;
 
-           // document.getElementById("help2").innerHTML = text.message[0].Salida;
+            console.log(folio);
+            var uri = 'http://172.16.2.50:8081/MFG-PRO/public_html/mfg/' + folio.toString();
+            //var txt = '<center> <iframe src="' + uri + '" width="700" height="400" frameBorder="0">Browser not compatible.</iframe></center>';
+            setTimeout(function () {
+                // var txt = '<a href="' + uri + '" target="_blank">View Report</a>';
+                // document.getElementById("bodyReport").innerHTML = txt;
+                loadXMLDoc(uri);
 
-            helper("help2", "info",  text.message[0].Salida, true);
-//            if (text.message.auth == "success") {
-//                formSuccess();
-//                console.log(text.message.JWT);
-//                localStorage.setItem("jwt", text.message.JWT);
-//            } else {
-//                formError();
-//                submitMSG(false, text.message.auth);
-//            }
+            }, 5000);
+            formSuccess();
+
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log(jqXHR);
+            console.log(textStatus);
+            console.log(errorThrown);
+            alert("No fue posible conectar con la nube. Verifique su conexión a internet");
+            submitMSG(false, "No fue posible conectar con la nube :( verifique su conexión a internet");
         }
     });
 }
 
 function formSuccess() {
     $("#ccxc")[0].reset();
-    submitMSG(true, "Bienvenido!");
-    location.href = "menu.html";
+    //submitMSG(true, "Bienvenido!");
+    //location.href = "menu.html";
 }
 
 function formError() {
@@ -156,4 +168,17 @@ function helper(idiv, type, message, dismissible = false) {
             document.getElementById(idiv).innerHTML = '<div class="alert alert-dark alert-dark"><button type="button" class="close" data-dismiss="alert">&times;</button><strong>Message!</strong> ' + message + '</div>'
             break;
 }
+}
+
+
+function loadXMLDoc(uri) {
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            document.getElementById("bodyReport").innerHTML =
+                    this.responseText;
+        }
+    };
+    xhttp.open("GET", uri, true);
+    xhttp.send();
 }
