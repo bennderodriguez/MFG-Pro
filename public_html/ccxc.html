@@ -89,8 +89,8 @@
                             <div class="form-group">
                                 <label for="Salida">Salida</label>
                                 <select class="form-control" id="Salida" name="Salida" required>
-                                    <option value="Window">Window</option>
                                     <option value="Terminal">Terminal</option>
+                                    <option value="PDF">PDF</option>
                                 </select>
                                 <div class="help-block with-errors text-danger"></div>
                             </div>
@@ -107,10 +107,8 @@
                 </form>
                 <div class="card">
                     <div class="card-header">Reporte</div>
-                    <div class="card-body" id="bodyReport">
-                       
-                        <div id="help2"></div>
-                    </div> 
+                    <div id="help2"></div>
+                    <div class="card-body" id="bodyReport"></div> 
                     <div class="card-footer"><button onclick="printDiv()">print</button></div>
                 </div>
             </div>
@@ -179,7 +177,7 @@
                     <!-- Modal body -->
                     <div class="modal-body">
                         <div id="loadTableMonedaReporte"></div>
-                        
+
                     </div>
 
                     <!-- Modal footer -->
@@ -259,7 +257,7 @@
                         }
                     };
 
-                    xmlhttp.open("GET", "http://172.16.2.50:8081/MFG-RockJS/?action=getMoneda&jwt=" + jwt.toLocaleString(), true);
+                    xmlhttp.open("GET", mfg_rockjs+"/?action=getMoneda&jwt=" + jwt.toLocaleString(), true);
                     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                     xmlhttp.send("jwt=" + dbParam);
                 });
@@ -310,7 +308,7 @@
                         }
                     };
 
-                    xmlhttp.open("GET", "http://172.16.2.50:8081/MFG-RockJS/?action=getMoneda&jwt=" + jwt.toLocaleString(), true);
+                    xmlhttp.open("GET", mfg_rockjs+"/?action=getMoneda&jwt=" + jwt.toLocaleString(), true);
                     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                     xmlhttp.send("jwt=" + dbParam);
                 });
@@ -324,6 +322,7 @@
                  * con los datos del la moneda seleccionado
                  */
                 $("#Clientes").click(function () {
+                    //$("#bodyReport").empty();
                     document.getElementById("loadTableClient").innerHTML = '<div class="alert alert-info"><strong>Espere</strong> Cargando Contenido ... espere <i class="pe-7s-config pe-spin pe-2x pe-va"></i></div>';
                     var obj, dbParam, xmlhttp, myObj, x, txt = "";
                     obj = {table: "customers", limit: 20};
@@ -366,7 +365,7 @@
                         }
                     };
 
-                    xmlhttp.open("GET", "http://172.16.2.50:8081/MFG-RockJS/?action=getCliente&jwt=" + jwt.toLocaleString(), true);
+                    xmlhttp.open("GET", mfg_rockjs+"/?action=getCliente&jwt=" + jwt.toLocaleString(), true);
                     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                     xmlhttp.send("jwt=" + dbParam);
                 });

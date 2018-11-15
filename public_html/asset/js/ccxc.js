@@ -5,16 +5,17 @@ $("#ccxc").validator().on("submit", function (event) {
         submitMSG(false, "Todos los campos  requeridos");
     } else {
         submitMSG(false, "");
+        $("#bodyReport").empty();
         // everything looks good!
         event.preventDefault();
         submitForm();
-
-        document.getElementById("bodyReport").innerHTML = "";
     }
 });
 
 
 function submitForm() {
+    document.getElementById("bodyReport").innerHTML = '<div class="alert alert-info"><strong>Espere</strong> Cargando Contenido ... espere <i class="pe-7s-config pe-spin pe-2x pe-va"></i></div>';
+
     // Initiate Variables With Form Content
     var Cobra = $("#Cobra").val();
     console.log('Cobra: ' + Cobra);
@@ -40,28 +41,38 @@ function submitForm() {
     //get JWT
     var jwt = localStorage.getItem("jwt");
 
-    document.getElementById("help2").innerHTML = '<div class="alert alert-info"><strong>Espere</strong> Cargando Contenido ... espere <i class="pe-7s-config pe-spin pe-2x pe-va"></i></div>';
+    //document.getElementById("help2").innerHTML = '<div class="alert alert-info"><strong>Espere</strong> Cargando Contenido ... espere <i class="pe-7s-config pe-spin pe-2x pe-va"></i></div>';
 
-
+    //$("help2").append('<div class="alert alert-info"><strong>Espere</strong> Cargando Contenido ... espere <i class="pe-7s-config pe-spin pe-2x pe-va"></i></div>');
     $.ajax({
         type: "POST",
-        url: "http://172.16.2.50:8081/MFG-RockJS/",
+        url: mfg_rockjs,
         data: "action=ccxc&jwt=" + jwt + "&vipcte=" + Cobra + "&vipabierto=" + "no"
                 + "&vipmoneda=" + Moneda + "&vipmodeda2=" + MonedaRep + "&Salida=" + Salida
                 + "&Cobra=1&Solo_Abiert=1&Moneda=1&MonedaRep=1",
         success: function (text) {
-            document.getElementById("bodyReport").innerHTML = '<div class="alert alert-info"><strong>Espere</strong> Cargando Contenido ... espere <i class="pe-7s-config pe-spin pe-2x pe-va"></i></div>';
+            //$("#bodyReport").empty();
 
             console.log(text);
             var folio = text.message[0].Consulta;
 
             console.log(folio);
-            var uri = 'http://172.16.2.50:8081/MFG-PRO/public_html/mfg/' + folio.toString();
+            var uri = mfg_front + folio.toString();
+            //var uri = 'reporte';
             //var txt = '<center> <iframe src="' + uri + '" width="700" height="400" frameBorder="0">Browser not compatible.</iframe></center>';
             setTimeout(function () {
+
                 // var txt = '<a href="' + uri + '" target="_blank">View Report</a>';
                 // document.getElementById("bodyReport").innerHTML = txt;
-                loadXMLDoc(uri);
+                if (Salida == "Terminal") {
+                    $("#bodyReport").empty();
+                    readTextFile(uri + '.prn');
+                } else {
+                    $("#bodyReport").empty();
+                    //loadPDF(uri + '.pdf');
+                    document.getElementById("bodyReport").innerHTML =
+                            '<iframe src="' + uri + '.pdf" style="width:100%;height:700px;"></iframe>';
+                }
 
             }, 5000);
             formSuccess();
@@ -74,6 +85,54 @@ function submitForm() {
             alert("No fue posible conectar con la nube. Verifique su conexión a internet");
             submitMSG(false, "No fue posible conectar con la nube :( verifique su conexión a internet");
         }
+    });
+}
+
+//$(document).ready(function () {
+//    readTextFile('reporte.rpm');
+//});
+
+function readTextFile(file)
+{
+    var txtFile = new XMLHttpRequest();
+    txtFile.open("GET", file, false);
+    txtFile.onreadystatechange = function ()
+    {
+        if (txtFile.readyState === 4)
+        {
+            if (txtFile.status === 200 || txtFile.status == 0)
+            {
+                var result = txtFile.responseText;
+                var lines = result.split("\n");
+                console.log(result);
+                for (var i = 0; i < lines.length; i++) {
+                    //create option
+                    var el = $('<pre value="' + i + '">' + lines[i] + '</pre>');
+                    //append option to select
+                    $('#bodyReport').append(el);
+                }
+
+            }
+        }
+    }
+    txtFile.send(null);
+}
+
+function loadXMLDoc(uri) {
+    $.get('reporte.rpm', function (data) {
+        //split on new lines
+        var lines = data.split('\n');
+        //create select
+        var dropdown = $('<select>');
+        //iterate over lines of file and create a option element
+        for (var i = 0; i < lines.length; i++) {
+            //create option
+            var el = $('<option value="' + i + '">' + lines[i] + '</option>');
+            //append option to select
+            $(dropdown).append(el);
+        }
+        //append select to page
+        $('bodyReport').append(dropdown);
     });
 }
 
@@ -170,15 +229,17 @@ function helper(idiv, type, message, dismissible = false) {
 }
 }
 
+//
+//function loadXMLDoc(uri) {
+//    var xhttp = new XMLHttpRequest();
+//    xhttp.onreadystatechange = function () {
+//        if (this.readyState == 4 && this.status == 200) {
+//            document.getElementById("bodyReport").innerHTML =
+//                    this.responseText;
+//        }
+//    };
+//    xhttp.open("GET", uri, true);
+//    xhttp.send();
+//}
 
-function loadXMLDoc(uri) {
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            document.getElementById("bodyReport").innerHTML =
-                    this.responseText;
-        }
-    };
-    xhttp.open("GET", uri, true);
-    xhttp.send();
-}
+
