@@ -1,11 +1,3 @@
-var BackEnd = {url: "http://172.16.2.50:8081/MFG-RockJS/"};
-//var BackEnd = {url: "http://localhost/MFG-RockJS/"};
-var mfg_rockjs = BackEnd["url"];
-
-var FronEnd = {url: "http://172.16.2.50:8081/MFG-PRO/public_html/mfg/"};
-//var FronEnd = {url: "http://localhost/MFG-PRO/public_html/"};
-var mfg_front = FronEnd["url"];
-
 $("#contactForm").validator().on("submit", function (event) {
     if (event.isDefaultPrevented()) {
         // handle the invalid form...
@@ -18,8 +10,6 @@ $("#contactForm").validator().on("submit", function (event) {
     }
 });
 
-console.log("Conect to " + mfg_rockjs);
-console.log("Conect to " + mfg_front);
 function submitForm() {
     // Initiate Variables With Form Content
     var usuario = $("#usuario").val();
@@ -28,17 +18,19 @@ function submitForm() {
     console.log('Password: ' + Password);
     $.ajax({
         type: "POST",
-        url: mfg_rockjs,
+        url: "http://localhost/MFG-RockJS/",
         data: "action=auth&usuario=" + usuario + "&Password=" + Password,
         success: function (text) {
             console.log(text);
-            if (text.message.auth == "success") {
+            if (text.message[0].auth == "success") {
+                localStorage.setItem("jwt", text.message[2].JWT);
+                var obj = JSON.stringify(text.message[1]);
+                console.log(obj);
+                localStorage.setItem("Opciones", obj);
                 formSuccess();
-                console.log(text.message.JWT);
-                localStorage.setItem("jwt", text.message.JWT);
             } else {
                 formError();
-                submitMSG(false, text.message.auth);
+                submitMSG(false, text.message[0].auth);
             }
         }
     });

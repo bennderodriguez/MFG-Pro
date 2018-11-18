@@ -32,7 +32,11 @@
         <div id="mySidenav" class="sidenav" style="margin-top:40px">
             <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
             <a href="menu.html">Menu</a>
-            <a href="ccxc.html">Consultar cuenta cliente</a>
+            <div id="OpMen">
+                <!--a href="cixa.html">Consultar Inventarios X Articulo</a>
+                <a href="cot.html">Consulta de OTs</a>
+                <a href="ccxc.html">Consultar cuenta cliente</a-->
+            </div>
             <a href="#" onclick="louout()">Salir</a>
         </div>
         <div id="main">
@@ -49,3 +53,13 @@
                 </div>
             </div>
             <div class="container-fluid" style="margin-top:75px">
+                <script>
+                    $(document).ready(function () {
+                        var array = JSON.parse(localStorage.getItem("Opciones"));
+                        console.log(array);
+                        Object.keys(array.Opciones).forEach(function (k) {
+                            //console.log(k + ' - ' + array.Opciones[k]);
+                            $("#OpMen").append('<a href="' + k + '">' + array.Opciones[k] + '</a>');
+                        });
+                    });
+                </script>
