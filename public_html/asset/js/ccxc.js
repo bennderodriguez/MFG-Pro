@@ -46,7 +46,7 @@ function submitForm() {
     //$("help2").append('<div class="alert alert-info"><strong>Espere</strong> Cargando Contenido ... espere <i class="pe-7s-config pe-spin pe-2x pe-va"></i></div>');
     $.ajax({
         type: "POST",
-        url: "http://localhost/MFG-RockJS/",
+        url: host+"/MFG-RockJS/",
         data: "action=ccxc&jwt=" + jwt + "&vipcte=" + Cobra + "&vipabierto=" + "no"
                 + "&vipmoneda=" + Moneda + "&vipmodeda2=" + MonedaRep + "&Salida=" + Salida
                 + "&Cobra=1&Solo_Abiert=1&Moneda=1&MonedaRep=1",
@@ -57,7 +57,14 @@ function submitForm() {
             var folio = text.message[0].Consulta;
 
             console.log(folio);
-            var uri = "http://localhost/MFG-RockJS/mfg/" + folio.toString();
+            ///mfg-pro/public_html/mfg/
+            var uri = ""
+            if(host == "http://localhost"){
+                uri = 'reporte';
+            }else{
+                uri = host+"/mfg-pro/public_html/mfg/" + folio.toString();
+            }
+            
             //var uri = 'reporte';
             //var txt = '<center> <iframe src="' + uri + '" width="700" height="400" frameBorder="0">Browser not compatible.</iframe></center>';
             setTimeout(function () {

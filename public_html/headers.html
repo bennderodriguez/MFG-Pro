@@ -58,8 +58,11 @@
                         var array = JSON.parse(localStorage.getItem("Opciones"));
                         console.log(array);
                         Object.keys(array.Opciones).forEach(function (k) {
-                            //console.log(k + ' - ' + array.Opciones[k]);
-                            $("#OpMen").append('<a href="' + k + '">' + array.Opciones[k] + '</a>');
+                           // console.log(k + ' - ' + array.Opciones[k]);
+                            var str = k;
+                            var res = str.replace(".p", ".html");
+                           // console.log(res);
+                            $("#OpMen").append('<a href="' + res + '">' + array.Opciones[k] + '</a>');
                         });
                     });
                 </script>

@@ -257,7 +257,7 @@
                         }
                     };
 
-                    xmlhttp.open("GET", "http://localhost/MFG-RockJS/?action=getMoneda&jwt=" + jwt.toLocaleString(), true);
+                    xmlhttp.open("GET", host+"/MFG-RockJS/?action=getMoneda&jwt=" + jwt.toLocaleString(), true);
                     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                     xmlhttp.send("jwt=" + dbParam);
                 });
@@ -308,7 +308,7 @@
                         }
                     };
 
-                    xmlhttp.open("GET", "http://localhost/MFG-RockJS/?action=getMoneda&jwt=" + jwt.toLocaleString(), true);
+                    xmlhttp.open("GET", host+"/MFG-RockJS/?action=getMoneda&jwt=" + jwt.toLocaleString(), true);
                     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                     xmlhttp.send("jwt=" + dbParam);
                 });
@@ -365,7 +365,7 @@
                         }
                     };
 
-                    xmlhttp.open("GET", "http://localhost/MFG-RockJS/?action=getCliente&jwt=" + jwt.toLocaleString(), true);
+                    xmlhttp.open("GET", "/MFG-RockJS/?action=getCliente&jwt=" + jwt.toLocaleString(), true);
                     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                     xmlhttp.send("jwt=" + dbParam);
                 });

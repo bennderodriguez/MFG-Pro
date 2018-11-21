@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="asset/js/jquery-1.12.4.js"></script>
+        <script>
+            $(document).ready(function () {
+                $("#header").load("headers.html", function (responseTxt, statusTxt, xhr) {});
+                $("#footer").load("footer.html", function (responseTxt, statusTxt, xhr) {});
+
+            });
+        </script>
+    </head>
+    <body>
+        <p id="result"> </p>
+        <div id="header"></div>
+        <div class="loader"></div>
+
+        <div id="rockjsDragable" >
+            <div class="panel">
+                <div class="card panel-heading">
+                    <div class="card-header">
+                        <div class="d-flex justify-content-between align-items-end">
+                            <h4>Cons Orden Trabajo Movil</h4>
+                            <button type="button" class="btn btn-outline-primary" onclick="location.href = 'menu.html';">Menu</button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <p>Opcion en construccion</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="footer">
+        </div>
+
+    </body>
+</html>
