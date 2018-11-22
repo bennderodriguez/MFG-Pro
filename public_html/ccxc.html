@@ -191,6 +191,14 @@
 
         <div id="footer">
             <script>
+                var thispage = "i-arcsiq.p";
+                var opciones = JSON.parse(localStorage.getItem("Opciones"));
+                var opciones2 = JSON.stringify(opciones);
+                if(!opciones2.includes("ccxc.p")){
+                    location.href = "error-page.html";
+                }
+            </script>
+            <script>
                 // Check browser support
                 if (typeof (Storage) !== "undefined") {
                     var jwt = localStorage.getItem("jwt");
@@ -257,7 +265,7 @@
                         }
                     };
 
-                    xmlhttp.open("GET", mfg_rockjs+"/?action=getMoneda&jwt=" + jwt.toLocaleString(), true);
+                    xmlhttp.open("GET", mfg_rockjs + "/?action=getMoneda&jwt=" + jwt.toLocaleString(), true);
                     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                     xmlhttp.send("jwt=" + dbParam);
                 });
@@ -308,7 +316,7 @@
                         }
                     };
 
-                    xmlhttp.open("GET", mfg_rockjs+"/?action=getMoneda&jwt=" + jwt.toLocaleString(), true);
+                    xmlhttp.open("GET", mfg_rockjs + "/?action=getMoneda&jwt=" + jwt.toLocaleString(), true);
                     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                     xmlhttp.send("jwt=" + dbParam);
                 });
@@ -365,7 +373,7 @@
                         }
                     };
 
-                    xmlhttp.open("GET", mfg_rockjs+"/?action=getCliente&jwt=" + jwt.toLocaleString(), true);
+                    xmlhttp.open("GET", mfg_rockjs + "/?action=getCliente&jwt=" + jwt.toLocaleString(), true);
                     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                     xmlhttp.send("jwt=" + dbParam);
                 });
