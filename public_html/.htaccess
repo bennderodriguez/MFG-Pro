@@ -1,0 +1,1 @@
+ErrorDocument 404 http://localhost/mfg-pro/public_html/error-page.php

@@ -39,7 +39,7 @@ function submitForm() {
 function formSuccess() {
     $("#contactForm")[0].reset();
     submitMSG(true, "Bienvenido!");
-    location.href = "menu.html";
+    location.href = "menu.php";
 }
 
 function formError() {

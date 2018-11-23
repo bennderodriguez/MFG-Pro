@@ -53,16 +53,3 @@
                 </div>
             </div>
             <div class="container-fluid" style="margin-top:75px">
-                <script>
-                    $(document).ready(function () {
-                        var array = JSON.parse(localStorage.getItem("Opciones"));
-                        console.log(array);
-                        Object.keys(array.Opciones).forEach(function (k) {
-                           // console.log(k + ' - ' + array.Opciones[k]);
-                            var str = k;
-                            var res = str.replace(".p", ".html");
-                           // console.log(res);
-                            $("#OpMen").append('<a href="' + res + '">' + array.Opciones[k] + '</a>');
-                        });
-                    });
-                </script>

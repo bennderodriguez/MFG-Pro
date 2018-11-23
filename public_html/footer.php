@@ -4,6 +4,7 @@
 <div class="clearfix">
     <span class="float-right text-muted">RockJS 1.0.0 <i class="pe-7s-science"></i></span>
 </div>
+
 <!-- Side menu JS -->
 <script>
     function openNav() {
@@ -31,7 +32,7 @@
 <script src="asset/js/pdfmake.min.js"></script>
 <script src="asset/js/vfs_fonts.js"></script>
 <script src="asset/js/buttons.html5.min.js"></script>
-<script> 
+<script>
     $(document).ready(function () {
         $('#example').DataTable();
     });
@@ -42,8 +43,6 @@
 <!-- Web Service Login -->
 <script src="asset/js/validator.min.js"></script>
 <script src="asset/js/form-scripts.js"></script>
-<script type="text/javascript" src="asset/js/ccxc.js"></script>
-<script src="asset/js/i-wowsiq.js"></script>
 
 <!-- Draggable JS -->
 <script src="asset/draggable-ui/jquery-ui.js"></script>
@@ -62,5 +61,38 @@
 
 </script>
 <script src="asset/js/angular.min.js"></script>
+
+<!-- Validate Session JS & display menunin array of login -->
+<script>
+    $(document).ready(function () {
+        var array = JSON.parse(localStorage.getItem("Opciones"));
+        console.log(array);
+        Object.keys(array.Opciones).forEach(function (k) {
+            // console.log(k + ' - ' + array.Opciones[k]);
+            var str = k;
+            var res = str.replace(".p", ".php");
+            // console.log(res);
+            $("#OpMen").append('<a href="' + res + '">' + array.Opciones[k] + '</a>');
+        });
+    });
+    // Check browser support
+    if (typeof (Storage) !== "undefined") {
+        var jwt = localStorage.getItem("jwt");
+        if (jwt == "" || jwt == null)
+        {
+            location.href = "index.html";
+        } else {
+            //document.getElementById("result").innerHTML = jwt;
+            //console.log(jwt);
+        }
+    } else {
+        document.getElementById("result").innerHTML = "Sorry, your browser does not support Web Storage...";
+    }
+
+    function louout() {
+        localStorage.clear();
+        location.href = "index.html";
+    }
+</script>
 </body>
 </html>
