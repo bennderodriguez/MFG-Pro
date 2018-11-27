@@ -18,7 +18,7 @@ function submitForm() {
     console.log('Password: ' + Password);
     $.ajax({
         type: "POST",
-        url: host+"/MFG-RockJS/",
+        url: host + "/MFG-RockJS/",
         data: "action=auth&usuario=" + usuario + "&Password=" + Password,
         success: function (text) {
             console.log(text);
@@ -27,11 +27,20 @@ function submitForm() {
                 var obj = JSON.stringify(text.message[1]);
                 console.log(obj);
                 localStorage.setItem("Opciones", obj);
+                localStorage.setItem("userLog", usuario); //save user
+
                 formSuccess();
             } else {
                 formError();
                 submitMSG(false, text.message[0].auth);
             }
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log(jqXHR);
+            console.log(textStatus);
+            console.log(errorThrown);
+            alert("No fue posible conectar con el servidor");
+            submitMSG(false, "No fue posible conectar con el servidor");
         }
     });
 }

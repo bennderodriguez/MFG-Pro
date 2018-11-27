@@ -40,12 +40,14 @@ function submitForm() {
 
     //get JWT
     var jwt = localStorage.getItem("jwt");
+    //get user login
+    var myUSer = localStorage.getItem("userLog");
 
     $.ajax({
         type: "POST",
         url: host + "/MFG-RockJS/",
-        data: "action=wowsiq&jwt=" + jwt + "&vpart="+Articulos+"&vot="+OT
-                +"&vid="+ID+"&vfecha="+Vencido+"&vsite="+Almacen,
+        data: "action=wowsiq&vusuario=" + myUSer + "&jwt=" + jwt + "&vpart=" + Articulos + "&vot=" + OT
+                + "&vid=" + ID + "&vfecha=" + Vencido + "&vsite=" + Almacen,
         success: function (text) {
             console.log(text);
             //Validamos que la sesion este activa
@@ -56,23 +58,25 @@ function submitForm() {
 
                 console.log(folio);
                 ///mfg-pro/public_html/mfg/
-                var uri = ""
-                if (host == "http://localhost") {
-                    uri = 'reporte';
-                } else {
-                    uri = host + "/mfg-pro/public_html/mfg/" + folio.toString();
-                }
+                uri = host + "/mfg-pro/public_html/mfg/" + folio.toString();
 
                 setTimeout(function () {
-                    if (Salida == "Terminal") {
-                        $("#bodyReport").empty();
-                        readTextFile(uri + '.prn');
+                    var fileExist = doesFileExist(uri + ".prn");
+                    if (fileExist) {
+                        if (Salida == "Terminal") {
+                            $("#bodyReport").empty();
+                            readTextFile(uri + '.prn');
+                        } else {
+                            $("#bodyReport").empty();
+                            //loadPDF(uri + '.pdf');
+                            document.getElementById("bodyReport").innerHTML =
+                                    '<iframe src="' + uri + '.pdf" style="width:100%;height:700px;"></iframe>';
+                        }
                     } else {
                         $("#bodyReport").empty();
-                        //loadPDF(uri + '.pdf');
-                        document.getElementById("bodyReport").innerHTML =
-                                '<iframe src="' + uri + '.pdf" style="width:100%;height:700px;"></iframe>';
+                        readTextFile(uri + ".err");
                     }
+
 
                 }, 5000);
                 formSuccess();
@@ -84,8 +88,8 @@ function submitForm() {
             console.log(jqXHR);
             console.log(textStatus);
             console.log(errorThrown);
-            alert("No fue posible conectar con la nube. Verifique su conexión a internet");
-            submitMSG(false, "No fue posible conectar con la nube :( verifique su conexión a internet");
+            alert("No fue posible conectar con el servidor");
+            submitMSG(false, "No fue posible conectar con el servidor");
         }
     });
 }
@@ -94,8 +98,7 @@ function submitForm() {
 //    readTextFile('reporte.rpm');
 //});
 
-function readTextFile(file)
-{
+function readTextFile(file) {
     var txtFile = new XMLHttpRequest();
     txtFile.open("GET", file, false);
     txtFile.onreadystatechange = function ()
@@ -118,6 +121,21 @@ function readTextFile(file)
         }
     }
     txtFile.send(null);
+}
+
+
+function doesFileExist(urlToFile) {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', urlToFile, false);
+    xhr.send();
+
+    if (xhr.status == "404") {
+        console.log("File doesn't exist");
+        return false;
+    } else {
+        console.log("File exists");
+        return true;
+    }
 }
 
 function loadXMLDoc(uri) {

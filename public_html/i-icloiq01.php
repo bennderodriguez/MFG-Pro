@@ -28,7 +28,7 @@
                     <div class="form-group">
                         <label for="Almacén">Almacén</label>
                         <div class="input-group mb-3">
-                            <input type="text" class="form-control" id="Almacen" name="Almacen" required>
+                            <input type="text" class="form-control" id="Almacen" name="Almacen">
                             <div class="input-group-append">
                                 <button class="btn btn-outline-info" title="Consultar Almacen" id="Almacenes" data-toggle="modal" data-target="#modalAlmacen"><i class="pe-7s-look"></i></button>
                             </div>
@@ -40,7 +40,7 @@
                     <div class="form-group">
                         <label for="Ubicacion">Ubicacion</label>
                         <div class="input-group mb-3">
-                            <input type="text" class="form-control" id="Ubicacion" name="Ubicacion" required>
+                            <input type="text" class="form-control" id="Ubicacion" name="Ubicacion">
                             <div class="input-group-append">
                                 <button class="btn btn-outline-info" title="Consultar catalogo de ubicaciones" id="btnUbicacion" data-toggle="modal" data-target="#modalUbicacion"><i class="pe-7s-look"></i></button>
                             </div>
@@ -67,7 +67,7 @@
                     <div class="form-group">
                         <label for="Status">Status</label>
                         <div class="input-group mb-3">
-                            <input type="text" class="form-control" id="Status" name="Status" required>
+                            <input type="text" class="form-control" id="Status" name="Status">
                             <div class="input-group-append">
                                 <button class="btn btn-outline-info" title="Consultar Status" id="btnStatus" data-toggle="modal" data-target="#modalStatus"><i class="pe-7s-look"></i></button>
                             </div>

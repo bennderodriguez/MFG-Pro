@@ -94,5 +94,33 @@
         location.href = "index.html";
     }
 </script>
+
+<!--script type="text/javascript">
+    var contadorAfk = 0;
+    $(document).ready(function () {
+        //Cada minuto se lanza la función ctrlTiempo
+          contadorAfk = setInterval(ctrlTiempo, 1000);
+
+        //Si el usuario mueve el ratón cambiamos la variable a 0.
+        $(this).mousemove(function (e) {
+            contadorAfk = 0;
+        });
+        //Si el usuario presiona alguna tecla cambiamos la variable a 0.
+        $(this).keypress(function (e) {
+            contadorAfk = 0;
+        });
+    });
+
+    function ctrlTiempo() {
+        console.log("contadorAfk "+contadorAfk);
+        //Se aumenta en 1 la variable.
+        contadorAfk++;
+        //Se comprueba si ha pasado del tiempo que designemos.
+        if (contadorAfk > 10) { // Más de 59 minutos, lo detectamos como ausente o inactivo.
+            console.log("Cerro sesion");
+        }
+    }
+</script-->  
+
 </body>
 </html>

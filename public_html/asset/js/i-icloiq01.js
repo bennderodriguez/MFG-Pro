@@ -20,23 +20,25 @@ function submitForm() {
     var Articulos = $("#Articulos").val();
     console.log('Articulos: ' + Articulos);
     var Almacen = $("#Almacen").val();
-    console.log('Almacen: '+ Almacen);
+    console.log('Almacen: ' + Almacen);
     var Ubicacion = $("#Ubicacion").val();
-    console.log('Ubicacion: '+ Ubicacion);
+    console.log('Ubicacion: ' + Ubicacion);
     var Lote = $("#Lote").val();
-    console.log('Lote: '+ Lote);
+    console.log('Lote: ' + Lote);
     var Status = $("#Status").val();
-    console.log('Status: '+ Status);
+    console.log('Status: ' + Status);
     var Salida = $("#Salida").val();
-    console.log('Salida: '+ Salida);
+    console.log('Salida: ' + Salida);
 
     //get JWT
     var jwt = localStorage.getItem("jwt");
+    //get user login
+    var myUSer = localStorage.getItem("userLog");
 
     $.ajax({
         type: "POST",
         url: host + "/MFG-RockJS/",
-        data: "action=icloiq&jwt=" + jwt + "&vpart=" + Articulos + "&valmacen=" + Almacen
+        data: "action=icloiq&vusuario=" + myUSer + "&jwt=" + jwt + "&vpart=" + Articulos + "&valmacen=" + Almacen
                 + "&vubica=" + Ubicacion + "&vloster=" + Lote + "&vstatus=" + Status,
         success: function (text) {
             console.log(text);
@@ -48,23 +50,25 @@ function submitForm() {
 
                 console.log(folio);
                 ///mfg-pro/public_html/mfg/
-                var uri = ""
-                if (host == "http://localhost") {
-                    uri = 'reporte';
-                } else {
-                    uri = host + "/mfg-pro/public_html/mfg/" + folio.toString();
-                }
+                uri = host + "/mfg-pro/public_html/mfg/" + folio.toString();
 
                 setTimeout(function () {
-                    if (Salida == "Terminal") {
-                        $("#bodyReport").empty();
-                        readTextFile(uri + '.prn');
+                    var fileExist = doesFileExist(uri + ".prn");
+                    if (fileExist) {
+                        if (Salida == "Terminal") {
+                            $("#bodyReport").empty();
+                            readTextFile(uri + '.prn');
+                        } else {
+                            $("#bodyReport").empty();
+                            //loadPDF(uri + '.pdf');
+                            document.getElementById("bodyReport").innerHTML =
+                                    '<iframe src="' + uri + '.pdf" style="width:100%;height:700px;"></iframe>';
+                        }
                     } else {
                         $("#bodyReport").empty();
-                        //loadPDF(uri + '.pdf');
-                        document.getElementById("bodyReport").innerHTML =
-                                '<iframe src="' + uri + '.pdf" style="width:100%;height:700px;"></iframe>';
+                        readTextFile(uri + ".err");
                     }
+
 
                 }, 5000);
                 formSuccess();
@@ -76,8 +80,8 @@ function submitForm() {
             console.log(jqXHR);
             console.log(textStatus);
             console.log(errorThrown);
-            alert("No fue posible conectar con la nube. Verifique su conexión a internet");
-            //submitMSG(false, "No fue posible conectar con la nube :( verifique su conexión a internet");
+            alert("No fue posible conectar con el servidor");
+            submitMSG(false, "No fue posible conectar con el servidor");
         }
     });
 }
@@ -86,8 +90,7 @@ function submitForm() {
 //    readTextFile('reporte.rpm');
 //});
 
-function readTextFile(file)
-{
+function readTextFile(file) {
     var txtFile = new XMLHttpRequest();
     txtFile.open("GET", file, false);
     txtFile.onreadystatechange = function ()
@@ -110,6 +113,21 @@ function readTextFile(file)
         }
     }
     txtFile.send(null);
+}
+
+
+function doesFileExist(urlToFile) {
+    var xhr = new XMLHttpRequest();
+    xhr.open('HEAD', urlToFile, false);
+    xhr.send();
+
+    if (xhr.status == "404") {
+        console.log("File doesn't exist");
+        return false;
+    } else {
+        console.log("File exists");
+        return true;
+    }
 }
 
 function loadXMLDoc(uri) {

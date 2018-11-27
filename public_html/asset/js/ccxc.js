@@ -40,57 +40,51 @@ function submitForm() {
 
     //get JWT
     var jwt = localStorage.getItem("jwt");
+    //get user login
+    var myUSer = localStorage.getItem("userLog");
 
-    //document.getElementById("help2").innerHTML = '<div class="alert alert-info"><strong>Espere</strong> Cargando Contenido ... espere <i class="pe-7s-config pe-spin pe-2x pe-va"></i></div>';
 
-    //$("help2").append('<div class="alert alert-info"><strong>Espere</strong> Cargando Contenido ... espere <i class="pe-7s-config pe-spin pe-2x pe-va"></i></div>');
     $.ajax({
         type: "POST",
-        url: host+"/MFG-RockJS/",
-        data: "action=ccxc&jwt=" + jwt + "&vipcte=" + Cobra + "&vipabierto=" + "no"
+        url: host + "/MFG-RockJS/",
+        data: "action=ccxc&vusuario=" + myUSer + "&jwt=" + jwt + "&vipcte=" + Cobra + "&vipabierto=" + "no"
                 + "&vipmoneda=" + Moneda + "&vipmodeda2=" + MonedaRep + "&Salida=" + Salida
                 + "&Cobra=1&Solo_Abiert=1&Moneda=1&MonedaRep=1",
         success: function (text) {
-            //$("#bodyReport").empty();
-
             console.log(text);
             var folio = text.message[0].Consulta;
 
             console.log(folio);
             ///mfg-pro/public_html/mfg/
-            var uri = ""
-            if(host == "http://localhost"){
-                uri = 'reporte';
-            }else{
-                uri = host+"/mfg-pro/public_html/mfg/" + folio.toString();
-            }
-            
-            //var uri = 'reporte';
-            //var txt = '<center> <iframe src="' + uri + '" width="700" height="400" frameBorder="0">Browser not compatible.</iframe></center>';
-            setTimeout(function () {
+            uri = host + "/mfg-pro/public_html/mfg/" + folio.toString();
 
-                // var txt = '<a href="' + uri + '" target="_blank">View Report</a>';
-                // document.getElementById("bodyReport").innerHTML = txt;
-                if (Salida == "Terminal") {
-                    $("#bodyReport").empty();
-                    readTextFile(uri + '.prn');
+            setTimeout(function () {
+                var fileExist = doesFileExist(uri + ".prn"); //busca .prn
+                if (fileExist) {
+                    if (Salida == "Terminal") {
+                        $("#bodyReport").empty();
+                        readTextFile(uri + '.prn');
+                    } else {
+                        $("#bodyReport").empty();
+                        //loadPDF(uri + '.pdf');
+                        document.getElementById("bodyReport").innerHTML =
+                                '<iframe src="' + uri + '.pdf" style="width:100%;height:700px;"></iframe>';
+                    }
                 } else {
                     $("#bodyReport").empty();
-                    //loadPDF(uri + '.pdf');
-                    document.getElementById("bodyReport").innerHTML =
-                            '<iframe src="' + uri + '.pdf" style="width:100%;height:700px;"></iframe>';
+                    readTextFile(uri + ".err"); //lee archivo de error
                 }
+
 
             }, 5000);
             formSuccess();
-
         },
         error: function (jqXHR, textStatus, errorThrown) {
             console.log(jqXHR);
             console.log(textStatus);
             console.log(errorThrown);
-            alert("No fue posible conectar con la nube. Verifique su conexión a internet");
-            submitMSG(false, "No fue posible conectar con la nube :( verifique su conexión a internet");
+            alert("No fue posible conectar con el servidor");
+            submitMSG(false, "No fue posible conectar con el servidor");
         }
     });
 }
@@ -99,8 +93,7 @@ function submitForm() {
 //    readTextFile('reporte.rpm');
 //});
 
-function readTextFile(file)
-{
+function readTextFile(file) {
     var txtFile = new XMLHttpRequest();
     txtFile.open("GET", file, false);
     txtFile.onreadystatechange = function ()
@@ -125,28 +118,23 @@ function readTextFile(file)
     txtFile.send(null);
 }
 
-function loadXMLDoc(uri) {
-    $.get('reporte.rpm', function (data) {
-        //split on new lines
-        var lines = data.split('\n');
-        //create select
-        var dropdown = $('<select>');
-        //iterate over lines of file and create a option element
-        for (var i = 0; i < lines.length; i++) {
-            //create option
-            var el = $('<option value="' + i + '">' + lines[i] + '</option>');
-            //append option to select
-            $(dropdown).append(el);
-        }
-        //append select to page
-        $('bodyReport').append(dropdown);
-    });
+
+function doesFileExist(urlToFile) {
+    var xhr = new XMLHttpRequest();
+    xhr.open('HEAD', urlToFile, false);
+    xhr.send();
+
+    if (xhr.status == "404") {
+        console.log("File doesn't exist");
+        return false;
+    } else {
+        console.log("File exists");
+        return true;
+    }
 }
 
 function formSuccess() {
     $("#ccxc")[0].reset();
-    //submitMSG(true, "Bienvenido!");
-    //location.href = "menu.html";
 }
 
 function formError() {
