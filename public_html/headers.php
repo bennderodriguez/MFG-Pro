@@ -31,7 +31,7 @@
         <div class="loader"></div>
         <div id="mySidenav" class="sidenav" style="margin-top:40px">
             <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-            <a href="menu.html">Menu</a>
+            <a href="menu.php">Menu</a>
             <div id="OpMen">
                 <!--a href="cixa.html">Consultar Inventarios X Articulo</a>
                 <a href="cot.html">Consulta de OTs</a>

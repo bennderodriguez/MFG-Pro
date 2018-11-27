@@ -181,24 +181,24 @@
 <script type="text/javascript" src="asset/js/ccxc.js"></script>
 <div id="footer">
     <script>
-        // Check browser support
-        if (typeof (Storage) !== "undefined") {
-            var jwt = localStorage.getItem("jwt");
-            if (jwt == "" || jwt == null)
-            {
-                location.href = "index.html";
-            } else {
-                //document.getElementById("result").innerHTML = jwt;
-                //console.log(jwt);
-            }
-        } else {
-            helper("help", "info", "Sorry, your browser does not support Web Storage...", true)
-        }
+                // Check browser support
+                if (typeof (Storage) !== "undefined") {
+                    var jwt = localStorage.getItem("jwt");
+                    if (jwt == "" || jwt == null)
+                    {
+                        location.href = "index.html";
+                    } else {
+                        //document.getElementById("result").innerHTML = jwt;
+                        //console.log(jwt);
+                    }
+                } else {
+                    helper("help", "info", "Sorry, your browser does not support Web Storage...", true)
+                }
 
-        function louout() {
-            localStorage.clear();
-            location.href = "index.html";
-        }
+                function louout() {
+                    localStorage.clear();
+                    location.href = "index.html";
+                }
     </script>
     <script>
         /*
@@ -208,9 +208,8 @@
          * con los datos del cliente seleccionado
          */
         $("#MonedasRep").click(function () {
+            $("#MonedaRep").val("");
             document.getElementById("loadTableMonedaReporte").innerHTML = '<div class="alert alert-info"><strong>Espere</strong> Cargando Contenido ... espere <i class="pe-7s-config pe-spin pe-2x pe-va"></i></div>';
-
-
             var obj, dbParam, xmlhttp, myObj, x, txt = "";
             obj = {table: "customers", limit: 20};
             dbParam = JSON.stringify(obj);
@@ -261,6 +260,7 @@
          * con los datos del cliente seleccionado
          */
         $("#Monedas").click(function () {
+            $("#Moneda").val("");
             document.getElementById("loadTableMoneda").innerHTML = '<div class="alert alert-info"><strong>Espere</strong> Cargando Contenido ... espere <i class="pe-7s-config pe-spin pe-2x pe-va"></i></div>';
             var obj, dbParam, xmlhttp, myObj, x, txt = "";
             obj = {table: "customers", limit: 20};
@@ -312,7 +312,7 @@
          * con los datos del la moneda seleccionado
          */
         $("#Clientes").click(function () {
-            //$("#bodyReport").empty();
+            $("#Cobra").val("");
             document.getElementById("loadTableClient").innerHTML = '<div class="alert alert-info"><strong>Espere</strong> Cargando Contenido ... espere <i class="pe-7s-config pe-spin pe-2x pe-va"></i></div>';
             var obj, dbParam, xmlhttp, myObj, x, txt = "";
             obj = {table: "customers", limit: 20};
